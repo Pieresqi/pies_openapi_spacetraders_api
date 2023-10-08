@@ -22,15 +22,18 @@ pub struct Waypoint {
     /// The symbol of the system this waypoint belongs to.
     #[serde(rename = "systemSymbol")]
     pub system_symbol: String,
-    /// Position in the universe in the x axis.
+    /// Relative position of the waypoint on the system's x axis. This is not an absolute position in the universe.
     #[serde(rename = "x")]
     pub x: i32,
-    /// Position in the universe in the Y axis.
+    /// Relative position of the waypoint on the system's y axis. This is not an absolute position in the universe.
     #[serde(rename = "y")]
     pub y: i32,
     /// Waypoints that orbit this waypoint.
     #[serde(rename = "orbitals")]
     pub orbitals: Vec<crate::models::WaypointOrbital>,
+    /// The symbol of the parent waypoint, if this waypoint is in orbit around another waypoint. Otherwise this value is undefined.
+    #[serde(rename = "orbits", skip_serializing_if = "Option::is_none")]
+    pub orbits: Option<String>,
     #[serde(rename = "faction", skip_serializing_if = "Option::is_none")]
     pub faction: Option<Box<crate::models::WaypointFaction>>,
     /// The traits of the waypoint.
@@ -50,6 +53,7 @@ impl Waypoint {
             x,
             y,
             orbitals,
+            orbits: None,
             faction: None,
             traits,
             chart: None,

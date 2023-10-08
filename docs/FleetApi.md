@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**create_survey**](FleetApi.md#create_survey) | **POST** /my/ships/{shipSymbol}/survey | Create Survey
 [**dock_ship**](FleetApi.md#dock_ship) | **POST** /my/ships/{shipSymbol}/dock | Dock Ship
 [**extract_resources**](FleetApi.md#extract_resources) | **POST** /my/ships/{shipSymbol}/extract | Extract Resources
+[**extract_resources_with_survey**](FleetApi.md#extract_resources_with_survey) | **POST** /my/ships/{shipSymbol}/extract/survey | Extract Resources with Survey
 [**get_mounts**](FleetApi.md#get_mounts) | **GET** /my/ships/{shipSymbol}/mounts | Get Mounts
 [**get_my_ship**](FleetApi.md#get_my_ship) | **GET** /my/ships/{shipSymbol} | Get Ship
 [**get_my_ship_cargo**](FleetApi.md#get_my_ship_cargo) | **GET** /my/ships/{shipSymbol}/cargo | Get Ship Cargo
@@ -220,7 +221,7 @@ Name | Type | Description  | Required | Notes
 > crate::models::ExtractResources201Response extract_resources(ship_symbol, extract_resources_request)
 Extract Resources
 
-Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.
+Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.  The survey property is now deprecated. See the `extract/survey` endpoint for more details.
 
 ### Parameters
 
@@ -229,6 +230,37 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** | The ship symbol. | [required] |
 **extract_resources_request** | Option<[**ExtractResourcesRequest**](ExtractResourcesRequest.md)> |  |  |
+
+### Return type
+
+[**crate::models::ExtractResources201Response**](extract_resources_201_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## extract_resources_with_survey
+
+> crate::models::ExtractResources201Response extract_resources_with_survey(ship_symbol, survey)
+Extract Resources with Survey
+
+Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ship_symbol** | **String** | The ship symbol. | [required] |
+**survey** | Option<[**Survey**](Survey.md)> |  |  |
 
 ### Return type
 

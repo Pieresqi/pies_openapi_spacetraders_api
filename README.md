@@ -41,6 +41,8 @@ All URIs are relative to *https://api.spacetraders.io/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AgentsApi* | [**get_agent**](docs/AgentsApi.md#get_agent) | **GET** /agents/{agentSymbol} | Get Public Agent
+*AgentsApi* | [**get_agents**](docs/AgentsApi.md#get_agents) | **GET** /agents | List Agents
 *AgentsApi* | [**get_my_agent**](docs/AgentsApi.md#get_my_agent) | **GET** /my/agent | Get Agent
 *ContractsApi* | [**accept_contract**](docs/ContractsApi.md#accept_contract) | **POST** /my/contracts/{contractId}/accept | Accept Contract
 *ContractsApi* | [**deliver_contract**](docs/ContractsApi.md#deliver_contract) | **POST** /my/contracts/{contractId}/deliver | Deliver Cargo to Contract
@@ -58,6 +60,7 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**create_survey**](docs/FleetApi.md#create_survey) | **POST** /my/ships/{shipSymbol}/survey | Create Survey
 *FleetApi* | [**dock_ship**](docs/FleetApi.md#dock_ship) | **POST** /my/ships/{shipSymbol}/dock | Dock Ship
 *FleetApi* | [**extract_resources**](docs/FleetApi.md#extract_resources) | **POST** /my/ships/{shipSymbol}/extract | Extract Resources
+*FleetApi* | [**extract_resources_with_survey**](docs/FleetApi.md#extract_resources_with_survey) | **POST** /my/ships/{shipSymbol}/extract/survey | Extract Resources with Survey
 *FleetApi* | [**get_mounts**](docs/FleetApi.md#get_mounts) | **GET** /my/ships/{shipSymbol}/mounts | Get Mounts
 *FleetApi* | [**get_my_ship**](docs/FleetApi.md#get_my_ship) | **GET** /my/ships/{shipSymbol} | Get Ship
 *FleetApi* | [**get_my_ship_cargo**](docs/FleetApi.md#get_my_ship_cargo) | **GET** /my/ships/{shipSymbol}/cargo | Get Ship Cargo
@@ -123,6 +126,7 @@ Class | Method | HTTP request | Description
  - [FactionSymbols](docs/FactionSymbols.md)
  - [FactionTrait](docs/FactionTrait.md)
  - [FulfillContract200Response](docs/FulfillContract200Response.md)
+ - [GetAgents200Response](docs/GetAgents200Response.md)
  - [GetContract200Response](docs/GetContract200Response.md)
  - [GetContracts200Response](docs/GetContracts200Response.md)
  - [GetFaction200Response](docs/GetFaction200Response.md)
@@ -222,6 +226,7 @@ Class | Method | HTTP request | Description
  - [ShipType](docs/ShipType.md)
  - [Shipyard](docs/Shipyard.md)
  - [ShipyardShip](docs/ShipyardShip.md)
+ - [ShipyardShipCrew](docs/ShipyardShipCrew.md)
  - [ShipyardShipTypesInner](docs/ShipyardShipTypesInner.md)
  - [ShipyardTransaction](docs/ShipyardTransaction.md)
  - [Survey](docs/Survey.md)

@@ -32,11 +32,13 @@ pub struct ShipyardShip {
     pub modules: Vec<crate::models::ShipModule>,
     #[serde(rename = "mounts")]
     pub mounts: Vec<crate::models::ShipMount>,
+    #[serde(rename = "crew")]
+    pub crew: Box<crate::models::ShipyardShipCrew>,
 }
 
 impl ShipyardShip {
     /// 
-    pub fn new(name: String, description: String, purchase_price: i32, frame: crate::models::ShipFrame, reactor: crate::models::ShipReactor, engine: crate::models::ShipEngine, modules: Vec<crate::models::ShipModule>, mounts: Vec<crate::models::ShipMount>) -> ShipyardShip {
+    pub fn new(name: String, description: String, purchase_price: i32, frame: crate::models::ShipFrame, reactor: crate::models::ShipReactor, engine: crate::models::ShipEngine, modules: Vec<crate::models::ShipModule>, mounts: Vec<crate::models::ShipMount>, crew: crate::models::ShipyardShipCrew) -> ShipyardShip {
         ShipyardShip {
             r#type: None,
             name,
@@ -47,6 +49,7 @@ impl ShipyardShip {
             engine: Box::new(engine),
             modules,
             mounts,
+            crew: Box::new(crew),
         }
     }
 }

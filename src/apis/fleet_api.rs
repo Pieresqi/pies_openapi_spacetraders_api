@@ -64,6 +64,13 @@ pub enum ExtractResourcesError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`extract_resources_with_survey`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ExtractResourcesWithSurveyError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_mounts`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -398,7 +405,7 @@ pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol
     }
 }
 
-/// Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.
+/// Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.  The survey property is now deprecated. See the `extract/survey` endpoint for more details.
 pub async fn extract_resources(configuration: &configuration::Configuration, ship_symbol: &str, extract_resources_request: Option<crate::models::ExtractResourcesRequest>) -> Result<crate::models::ExtractResources201Response, Error<ExtractResourcesError>> {
     let local_var_configuration = configuration;
 
@@ -425,6 +432,38 @@ pub async fn extract_resources(configuration: &configuration::Configuration, shi
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<ExtractResourcesError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+pub async fn extract_resources_with_survey(configuration: &configuration::Configuration, ship_symbol: &str, survey: Option<crate::models::Survey>) -> Result<crate::models::ExtractResources201Response, Error<ExtractResourcesWithSurveyError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/extract/survey", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&survey);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<ExtractResourcesWithSurveyError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }
