@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 **r#type** | Option<[**crate::models::ShipType**](ShipType.md)> |  | [optional]
 **name** | **String** |  | 
 **description** | **String** |  | 
+**supply** | [**crate::models::SupplyLevel**](SupplyLevel.md) |  | 
+**activity** | Option<[**crate::models::ActivityLevel**](ActivityLevel.md)> |  | [optional]
 **purchase_price** | **i32** |  | 
 **frame** | [**crate::models::ShipFrame**](ShipFrame.md) |  | 
 **reactor** | [**crate::models::ShipReactor**](ShipReactor.md) |  | 

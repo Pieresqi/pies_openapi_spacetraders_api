@@ -12,7 +12,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Shipyard {
     /// The symbol of the shipyard. The symbol is the same as the waypoint where the shipyard is located.
     #[serde(rename = "symbol")]

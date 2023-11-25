@@ -80,8 +80,10 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**remove_mount**](docs/FleetApi.md#remove_mount) | **POST** /my/ships/{shipSymbol}/mounts/remove | Remove Mount
 *FleetApi* | [**sell_cargo**](docs/FleetApi.md#sell_cargo) | **POST** /my/ships/{shipSymbol}/sell | Sell Cargo
 *FleetApi* | [**ship_refine**](docs/FleetApi.md#ship_refine) | **POST** /my/ships/{shipSymbol}/refine | Ship Refine
+*FleetApi* | [**siphon_resources**](docs/FleetApi.md#siphon_resources) | **POST** /my/ships/{shipSymbol}/siphon | Siphon Resources
 *FleetApi* | [**transfer_cargo**](docs/FleetApi.md#transfer_cargo) | **POST** /my/ships/{shipSymbol}/transfer | Transfer Cargo
 *FleetApi* | [**warp_ship**](docs/FleetApi.md#warp_ship) | **POST** /my/ships/{shipSymbol}/warp | Warp Ship
+*SystemsApi* | [**get_construction**](docs/SystemsApi.md#get_construction) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/construction | Get Construction Site
 *SystemsApi* | [**get_jump_gate**](docs/SystemsApi.md#get_jump_gate) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/jump-gate | Get Jump Gate
 *SystemsApi* | [**get_market**](docs/SystemsApi.md#get_market) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/market | Get Market
 *SystemsApi* | [**get_shipyard**](docs/SystemsApi.md#get_shipyard) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/shipyard | Get Shipyard
@@ -89,15 +91,18 @@ Class | Method | HTTP request | Description
 *SystemsApi* | [**get_system_waypoints**](docs/SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints in System
 *SystemsApi* | [**get_systems**](docs/SystemsApi.md#get_systems) | **GET** /systems | List Systems
 *SystemsApi* | [**get_waypoint**](docs/SystemsApi.md#get_waypoint) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol} | Get Waypoint
+*SystemsApi* | [**supply_construction**](docs/SystemsApi.md#supply_construction) | **POST** /systems/{systemSymbol}/waypoints/{waypointSymbol}/construction/supply | Supply Construction Site
 
 
 ## Documentation For Models
 
  - [AcceptContract200Response](docs/AcceptContract200Response.md)
  - [AcceptContract200ResponseData](docs/AcceptContract200ResponseData.md)
+ - [ActivityLevel](docs/ActivityLevel.md)
  - [Agent](docs/Agent.md)
  - [Chart](docs/Chart.md)
- - [ConnectedSystem](docs/ConnectedSystem.md)
+ - [Construction](docs/Construction.md)
+ - [ConstructionMaterial](docs/ConstructionMaterial.md)
  - [Contract](docs/Contract.md)
  - [ContractDeliverGood](docs/ContractDeliverGood.md)
  - [ContractPayment](docs/ContractPayment.md)
@@ -127,6 +132,7 @@ Class | Method | HTTP request | Description
  - [FactionTrait](docs/FactionTrait.md)
  - [FulfillContract200Response](docs/FulfillContract200Response.md)
  - [GetAgents200Response](docs/GetAgents200Response.md)
+ - [GetConstruction200Response](docs/GetConstruction200Response.md)
  - [GetContract200Response](docs/GetContract200Response.md)
  - [GetContracts200Response](docs/GetContracts200Response.md)
  - [GetFaction200Response](docs/GetFaction200Response.md)
@@ -151,6 +157,7 @@ Class | Method | HTTP request | Description
  - [GetStatus200ResponseStats](docs/GetStatus200ResponseStats.md)
  - [GetSystem200Response](docs/GetSystem200Response.md)
  - [GetSystemWaypoints200Response](docs/GetSystemWaypoints200Response.md)
+ - [GetSystemWaypointsTraitsParameter](docs/GetSystemWaypointsTraitsParameter.md)
  - [GetSystems200Response](docs/GetSystems200Response.md)
  - [GetWaypoint200Response](docs/GetWaypoint200Response.md)
  - [InstallMount201Response](docs/InstallMount201Response.md)
@@ -229,6 +236,14 @@ Class | Method | HTTP request | Description
  - [ShipyardShipCrew](docs/ShipyardShipCrew.md)
  - [ShipyardShipTypesInner](docs/ShipyardShipTypesInner.md)
  - [ShipyardTransaction](docs/ShipyardTransaction.md)
+ - [Siphon](docs/Siphon.md)
+ - [SiphonResources201Response](docs/SiphonResources201Response.md)
+ - [SiphonResources201ResponseData](docs/SiphonResources201ResponseData.md)
+ - [SiphonYield](docs/SiphonYield.md)
+ - [SupplyConstruction200Response](docs/SupplyConstruction200Response.md)
+ - [SupplyConstruction200ResponseData](docs/SupplyConstruction200ResponseData.md)
+ - [SupplyConstructionRequest](docs/SupplyConstructionRequest.md)
+ - [SupplyLevel](docs/SupplyLevel.md)
  - [Survey](docs/Survey.md)
  - [SurveyDeposit](docs/SurveyDeposit.md)
  - [System](docs/System.md)
@@ -241,6 +256,7 @@ Class | Method | HTTP request | Description
  - [TransferCargoRequest](docs/TransferCargoRequest.md)
  - [Waypoint](docs/Waypoint.md)
  - [WaypointFaction](docs/WaypointFaction.md)
+ - [WaypointModifier](docs/WaypointModifier.md)
  - [WaypointOrbital](docs/WaypointOrbital.md)
  - [WaypointTrait](docs/WaypointTrait.md)
  - [WaypointType](docs/WaypointType.md)

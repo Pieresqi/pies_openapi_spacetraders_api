@@ -15,6 +15,13 @@ use crate::apis::ResponseContent;
 use super::{Error, configuration};
 
 
+/// struct for typed errors of method [`get_construction`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetConstructionError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_jump_gate`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -64,8 +71,46 @@ pub enum GetWaypointError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`supply_construction`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SupplyConstructionError {
+    UnknownValue(serde_json::Value),
+}
 
-/// Get jump gate details for a waypoint. Requires a waypoint of type `JUMP_GATE` to use.  The response will return all systems that are have a Jump Gate in range of this Jump Gate. Those systems can be jumped to from this Jump Gate.
+
+/// Get construction details for a waypoint. Requires a waypoint with a property of `isUnderConstruction` to be true.
+pub async fn get_construction(configuration: &configuration::Configuration, system_symbol: &str, waypoint_symbol: &str) -> Result<crate::models::GetConstruction200Response, Error<GetConstructionError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/systems/{systemSymbol}/waypoints/{waypointSymbol}/construction", local_var_configuration.base_path, systemSymbol=crate::apis::urlencode(system_symbol), waypointSymbol=crate::apis::urlencode(waypoint_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<GetConstructionError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Get jump gate details for a waypoint. Requires a waypoint of type `JUMP_GATE` to use.  Waypoints connected to this jump gate can be 
 pub async fn get_jump_gate(configuration: &configuration::Configuration, system_symbol: &str, waypoint_symbol: &str) -> Result<crate::models::GetJumpGate200Response, Error<GetJumpGateError>> {
     let local_var_configuration = configuration;
 
@@ -190,7 +235,7 @@ pub async fn get_system(configuration: &configuration::Configuration, system_sym
 }
 
 /// Return a paginated list of all of the waypoints for a given system.  If a waypoint is uncharted, it will return the `Uncharted` trait instead of its actual traits.
-pub async fn get_system_waypoints(configuration: &configuration::Configuration, system_symbol: &str, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetSystemWaypoints200Response, Error<GetSystemWaypointsError>> {
+pub async fn get_system_waypoints(configuration: &configuration::Configuration, system_symbol: &str, page: Option<i32>, limit: Option<i32>, r#type: Option<WaypointType>, traits: Option<GetSystemWaypointsTraitsParameter>) -> Result<crate::models::GetSystemWaypoints200Response, Error<GetSystemWaypointsError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -203,6 +248,12 @@ pub async fn get_system_waypoints(configuration: &configuration::Configuration, 
     }
     if let Some(ref local_var_str) = limit {
         local_var_req_builder = local_var_req_builder.query(&[("limit", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = r#type {
+        local_var_req_builder = local_var_req_builder.query(&[("type", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = traits {
+        local_var_req_builder = local_var_req_builder.query(&[("traits", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
@@ -289,6 +340,38 @@ pub async fn get_waypoint(configuration: &configuration::Configuration, system_s
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<GetWaypointError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Supply a construction site with the specified good. Requires a waypoint with a property of `isUnderConstruction` to be true.  The good must be in your ship's cargo. The good will be removed from your ship's cargo and added to the construction site's materials.
+pub async fn supply_construction(configuration: &configuration::Configuration, system_symbol: &str, waypoint_symbol: &str, supply_construction_request: Option<crate::models::SupplyConstructionRequest>) -> Result<crate::models::SupplyConstruction200Response, Error<SupplyConstructionError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/systems/{systemSymbol}/waypoints/{waypointSymbol}/construction/supply", local_var_configuration.base_path, systemSymbol=crate::apis::urlencode(system_symbol), waypointSymbol=crate::apis::urlencode(waypoint_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&supply_construction_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<SupplyConstructionError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }

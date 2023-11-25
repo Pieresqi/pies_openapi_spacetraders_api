@@ -204,6 +204,13 @@ pub enum ShipRefineError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`siphon_resources`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SiphonResourcesError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`transfer_cargo`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -725,7 +732,7 @@ pub async fn jettison(configuration: &configuration::Configuration, ship_symbol:
     }
 }
 
-/// Jump your ship instantly to a target system. The ship must be in orbit to use this function. When used while in orbit of a Jump Gate waypoint, any ship can use this command, jumping to the target system's Jump Gate waypoint.  When used elsewhere, jumping requires the ship to have a `Jump Drive` module installed and consumes a unit of antimatter from the ship's cargo. The command will fail if there is no antimatter to consume. When jumping via the `Jump Drive` module, the ship ends up at its largest source of energy in the system, such as a gas planet or a jump gate.
+/// Jump your ship instantly to a target connected waypoint. The ship must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the market when jumping. The price of antimatter is determined by the market and is subject to change. A ship can only jump to connected waypoints
 pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol: &str, jump_ship_request: Option<crate::models::JumpShipRequest>) -> Result<crate::models::JumpShip200Response, Error<JumpShipError>> {
     let local_var_configuration = configuration;
 
@@ -789,7 +796,7 @@ pub async fn navigate_ship(configuration: &configuration::Configuration, ship_sy
     }
 }
 
-/// Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at a faction's HQ waypoint to negotiate a contract with that faction.
+/// Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at any waypoint with a faction present to negotiate a contract with that faction.
 pub async fn negotiate_contract(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::NegotiateContract200Response, Error<NegotiateContractError>> {
     let local_var_configuration = configuration;
 
@@ -1070,6 +1077,37 @@ pub async fn ship_refine(configuration: &configuration::Configuration, ship_symb
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<ShipRefineError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Siphon gases, such as hydrocarbon, from gas giants.  The ship must be in orbit to be able to siphon and must have siphon mounts and a gas processor installed.
+pub async fn siphon_resources(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::SiphonResources201Response, Error<SiphonResourcesError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/siphon", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<SiphonResourcesError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }

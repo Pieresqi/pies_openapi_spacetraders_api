@@ -12,7 +12,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WaypointFaction {
     #[serde(rename = "symbol")]
     pub symbol: crate::models::FactionSymbols,

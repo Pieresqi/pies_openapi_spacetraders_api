@@ -13,7 +13,9 @@ Name | Type | Description | Notes
 **orbits** | Option<**String**> | The symbol of the parent waypoint, if this waypoint is in orbit around another waypoint. Otherwise this value is undefined. | [optional]
 **faction** | Option<[**crate::models::WaypointFaction**](WaypointFaction.md)> |  | [optional]
 **traits** | [**Vec<crate::models::WaypointTrait>**](WaypointTrait.md) | The traits of the waypoint. | 
+**modifiers** | Option<[**Vec<crate::models::WaypointModifier>**](WaypointModifier.md)> | The modifiers of the waypoint. | [optional]
 **chart** | Option<[**crate::models::Chart**](Chart.md)> |  | [optional]
+**is_under_construction** | **bool** | True if the waypoint is under construction. | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

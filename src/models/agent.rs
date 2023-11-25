@@ -12,7 +12,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Agent {
     /// Account ID that is tied to this agent. Only included on your own agent.
     #[serde(rename = "accountId", skip_serializing_if = "Option::is_none")]

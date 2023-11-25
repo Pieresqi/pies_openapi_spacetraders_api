@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct WaypointTrait {
     /// The unique identifier of the trait.
     #[serde(rename = "symbol")]
@@ -39,6 +39,8 @@ impl WaypointTrait {
 pub enum Symbol {
     #[serde(rename = "UNCHARTED")]
     Uncharted,
+    #[serde(rename = "UNDER_CONSTRUCTION")]
+    UnderConstruction,
     #[serde(rename = "MARKETPLACE")]
     Marketplace,
     #[serde(rename = "SHIPYARD")]
@@ -51,6 +53,8 @@ pub enum Symbol {
     SprawlingCities,
     #[serde(rename = "MEGA_STRUCTURES")]
     MegaStructures,
+    #[serde(rename = "PIRATE_BASE")]
+    PirateBase,
     #[serde(rename = "OVERCROWDED")]
     Overcrowded,
     #[serde(rename = "HIGH_TECH")]
@@ -135,6 +139,8 @@ pub enum Symbol {
     CorrosiveAtmosphere,
     #[serde(rename = "BREATHABLE_ATMOSPHERE")]
     BreathableAtmosphere,
+    #[serde(rename = "THIN_ATMOSPHERE")]
+    ThinAtmosphere,
     #[serde(rename = "JOVIAN")]
     Jovian,
     #[serde(rename = "ROCKY")]
@@ -153,6 +159,20 @@ pub enum Symbol {
     Jungle,
     #[serde(rename = "OCEAN")]
     Ocean,
+    #[serde(rename = "RADIOACTIVE")]
+    Radioactive,
+    #[serde(rename = "MICRO_GRAVITY_ANOMALIES")]
+    MicroGravityAnomalies,
+    #[serde(rename = "DEBRIS_CLUSTER")]
+    DebrisCluster,
+    #[serde(rename = "DEEP_CRATERS")]
+    DeepCraters,
+    #[serde(rename = "SHALLOW_CRATERS")]
+    ShallowCraters,
+    #[serde(rename = "UNSTABLE_COMPOSITION")]
+    UnstableComposition,
+    #[serde(rename = "HOLLOWED_INTERIOR")]
+    HollowedInterior,
     #[serde(rename = "STRIPPED")]
     Stripped,
 }

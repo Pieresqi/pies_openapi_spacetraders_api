@@ -12,7 +12,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Ship {
     /// The globally unique identifier of the ship in the following format: `[AGENT_SYMBOL]-[HEX_ID]`
     #[serde(rename = "symbol")]
